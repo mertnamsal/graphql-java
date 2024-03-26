@@ -1,0 +1,34 @@
+scalar DateTime
+
+## ! işareti zorunlu demek parantez içine yazarsak parametre alıyor demek
+type Query{
+    getAllUsers: [User]
+    getUserById(id: ID!): User
+}
+
+type Mutation{
+    createUser(userRequest: UserRequest!) : User
+    updateUser(userRequest: UserRequest!) : User
+    deleteUser(id:ID!) : Boolean
+}
+
+type User {
+    id: ID
+    created: DateTime # LocalDateTime a kızıyor scalar DateTime oluşturmak gerekiyor
+    updated: DateTime
+    username: String
+    mail: String
+    role: Role
+}
+
+enum Role{
+    ADMIN
+    USER
+}
+
+input UserRequest {
+    id: ID
+    username: String
+    mail: String
+    role: Role
+}
