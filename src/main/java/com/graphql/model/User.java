@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "`user`")
+@Entity(name = "`user`") //User h2 için yer ayıltımış olduğu için `` lari kullanarak yaziyoruz
 public class User extends BaseEntity{
     private String username;
     private String mail;

@@ -1,5 +1,6 @@
 package com.graphql.controller;
 
+import com.graphql.exception.UserNotFoundException;
 import com.graphql.model.Role;
 import com.graphql.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.test.annotation.DirtiesContext;
+
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,6 +30,7 @@ class UserControllerTest {
     createUser(new User("mert", "mert@gmail.com", Role.ADMIN));
     createUser(new User("ali", "ali@gmail.com", Role.USER));
     createUser(new User("mehmet", "mehmet@gmail.com", Role.USER));
+
   }
 
   @Test
@@ -52,6 +55,7 @@ class UserControllerTest {
   }
   @Test
   void when_createUser_should_createNewUserAndReturnUser(){
+    //language=graphql
     String mutation = """
         mutation{
         createUser(userRequest:{username:"mert",mail:"mert@gmail.com",role: ADMIN}){
@@ -67,7 +71,26 @@ class UserControllerTest {
         .path("createUser")
         .entity(User.class);
   }
+  @Test
+  void when_getUserById_should_returnUser(){
+    //language=graphql
+    String query = """
+        query{
+          getUserById(id:1){
+            id
+            username
+            role
+          }
+        }
+        """;
+    graphQlTester.document(query).execute()
+        .path("getUserById")
+        .entity(User.class);
+  }
 
+
+
+  // To create user before test
   void createUser(User user) {
     String mutation = """
         mutation{
