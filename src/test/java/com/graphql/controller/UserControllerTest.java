@@ -1,10 +1,14 @@
 package com.graphql.controller;
 
+import com.graphql.exception.GraphqlException;
 import com.graphql.exception.UserNotFoundException;
 import com.graphql.model.Role;
 import com.graphql.model.User;
+import com.graphql.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -14,7 +18,6 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.test.annotation.DirtiesContext;
 
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -22,6 +25,8 @@ import org.springframework.test.annotation.DirtiesContext;
 @AutoConfigureGraphQlTester
 class UserControllerTest {
 
+  @Mock
+  private UserService userService;
   @Autowired
   GraphQlTester graphQlTester;
 
@@ -87,8 +92,6 @@ class UserControllerTest {
         .path("getUserById")
         .entity(User.class);
   }
-
-
 
   // To create user before test
   void createUser(User user) {
